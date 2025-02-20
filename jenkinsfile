@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone Repo') {
             steps {
-                git branch: 'main', url: 'git@github.com:your-username/my-ci-cd-app.git'
+                git branch: 'main', url: 'https://github.com/pradeepproject1/ci-cd-app.git'
             }
         }
 
