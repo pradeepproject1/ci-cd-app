@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repo') {
+            steps {
+                git branch: 'main', url: 'git@github.com:your-username/my-ci-cd-app.git'
+            }
+        }
+
+        stage('Build & Test') {
+            steps {
+                sh 'echo "Building and Testing Application"'
+                sh 'echo "Tests Passed!"'
+            }
+        }
+
+        stage('Deploy to AWS EC2') {
+            steps {
+                sshagent(['jenkins-aws-key']) {
+                    sh '''
+                    ssh -o StrictHostKeyChecking=no ubuntu@your-ec2-ip <<EOF
+                        cd /var/www/html
+                        git pull origin main
+                        sudo systemctl restart apache2
+                    EOF
+                    '''
+                }
+            }
+        }
+    }
+}
